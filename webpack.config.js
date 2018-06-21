@@ -1,8 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const srcPath = path.join(__dirname, 'src');
 const distPath = path.join(__dirname, 'dist');
+const nodeModulesPath = path.join(__dirname, 'node_modules');
+const dev = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: './src/index.js',
@@ -10,6 +14,7 @@ module.exports = {
     path: distPath,
     filename: 'bundle.js'
   },
+  mode: dev ? 'development' : 'production',
   module: {
     rules: [
       {
@@ -70,8 +75,17 @@ module.exports = {
       }
     ]
   },
-  plugins: [
+  plugins: dev ? [
     new HtmlWebpackPlugin({
+      inject: true,
+      template: './src/index.html',
+    }),
+    new WatchMissingNodeModulesPlugin(nodeModulesPath),
+    new webpack.HotModuleReplacementPlugin(),
+  ] :
+  [
+    new HtmlWebpackPlugin({
+      inject: true,
       template: './src/index.html',
       minify: {
         collapseWhitespace: true,
