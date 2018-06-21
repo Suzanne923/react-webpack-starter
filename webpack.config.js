@@ -14,6 +14,9 @@ module.exports = {
     filename: 'bundle.js'
   },
   mode: dev ? 'development' : 'production',
+  devServer: {
+    port: 9000
+  },
   module: {
     rules: [
       {
