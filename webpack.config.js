@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 const srcPath = path.join(__dirname, 'src');
 const distPath = path.join(__dirname, 'dist');
 const dev = process.env.NODE_ENV !== 'production';
@@ -79,6 +80,7 @@ module.exports = {
       template: './src/index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new DashboardPlugin({ port: 3000 })
   ] :
   [
     new HtmlWebpackPlugin({
